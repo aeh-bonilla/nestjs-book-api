@@ -1,8 +1,13 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Request, UseGuards } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { Author } from './author.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ApiBearerAuth, ApiTags, ApiOperation, ApiParam, ApiBody } from '@nestjs/swagger';
 
+@ApiBearerAuth('JWT-auth')
+@ApiTags('Author')
 @Controller('author')
+@UseGuards(JwtAuthGuard)
 export class AuthorController {
   constructor(private readonly authorService: AuthorService) {}
 
@@ -23,8 +28,9 @@ export class AuthorController {
     }
   }
 
-  //create author
+  //create author  
   @Post()
+  @ApiOperation({ summary: 'Create Book\'s author' })
   async create(@Body() author: Author): Promise<Author> {
     return await this.authorService.create(author);
   }
@@ -46,3 +52,5 @@ export class AuthorController {
     return this.authorService.delete(id);
   }
 }
+
+

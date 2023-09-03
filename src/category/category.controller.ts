@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, Request,UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Request, UseGuards } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './category.entity';
 import { CategoryDto } from '../dto/category.dto';
@@ -42,12 +42,14 @@ export class CategoryController {
            value: {name: "economy"} as Category
         }
     }
-})
+  })
   async create(@Body() category: Category): Promise<Category> {
     return await this.categoryService.create(category);
   }
 
   //update category
+  @ApiOperation({ summary: 'Update Book\'s category' })
+  
   @Put(':id')
   async update(@Param('id') id: number, @Body() category: Category): Promise<Category> {
     return this.categoryService.update(id, category);
